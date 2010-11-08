@@ -1,3 +1,8 @@
+PATH
+  remote: ~/development/inploy
+  specs:
+    inploy (1.7.2)
+
 GEM
   remote: http://rubygems.org/
   specs:
@@ -75,7 +80,6 @@ GEM
     inherited_resources (1.0.6)
       has_scope (~> 0.5.0)
       responders (~> 0.4.6)
-    inploy (1.6.8)
     jrails (0.6.0)
     json_pure (1.4.5)
     koujou (0.1.3)
@@ -178,7 +182,7 @@ DEPENDENCIES
   haml
   hoptoad_notifier
   inherited_resources (= 1.0.6)
-  inploy (>= 1.6.8)
+  inploy (>= 1.6.8)!
   jrails
   koujou
   metric_fu
