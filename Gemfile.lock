@@ -1,5 +1,5 @@
 PATH
-  remote: ~/development/inploy
+  remote: /Users/sb/development/inploy
   specs:
     inploy (1.7.2)
 

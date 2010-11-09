@@ -1,7 +1,24 @@
-deploy.application = "signal"
-deploy.repository = 'git://github.com/dcrec1/signal.git'
-deploy.user = 'dcrec1'
-deploy.hosts = ['hooters', 'geni']
-deploy.path = '/opt'
 
-#deploy.environment = "production"
+application = "signal"
+repository = 'git://github.com/basiszwo/signal.git'
+hosts = ['hooters', 'geni']
+
+
+# before_restarting_server do
+#   run "script/delayed_job -e development restart"
+# end
+
+# OPTIONAL - THESE ARE SET BY DEFAULT
+
+environment = 'development'                  # default: production
+bundle_install_options = ""                  # default: --without development test cucumber
+
+# path = '/opt'                                # default: /var/local/apps
+# user = 'dcrec1'                              # default: deploy
+# ssh_opts = '-A'                              # default: empty
+# branch = 'production'                        # default: master
+# sudo = true                                  # default: false
+# cache_dirs = ['public/cache', 'tmp/cache']   # default: ['public/cache']
+# skip_steps = ['install_gems', 'clear_cache'] # default: []
+# app_folder = 'project_folder'                # default: empty 
+# login_shell = true                           # default: false

@@ -17,6 +17,7 @@ public/javascripts/*_packaged.js
 config/mailer.yml
 config/database.yml
 config/deploy.rb
+config/inploy.rb
 doc/specs.html
 doc/features.html
 rerun.txt
