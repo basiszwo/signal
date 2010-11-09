@@ -30,10 +30,6 @@ body, #header, #content {
   }
 }
 
-#content {
-  background-color: white;
-}
-
 body {
   @include blueprint-typography(true);
   @include blueprint-utilities;
@@ -54,6 +50,7 @@ body {
     .actions {
       padding-top: 5px;
       font-size: 16px;
+      margin-bottom: 10px;
     }
 
     .projects .project .name {
@@ -61,6 +58,15 @@ body {
     }
 
     .project {
+      
+      .header {
+        background-color: white;
+      }
+      
+      .author {
+        padding-top: 10px;
+      }
+      
       .name, .author {
         font-weight: bold;
       }
@@ -77,13 +83,18 @@ body {
       .url, .email, .branch {
         display: none; 
       }
+      
+      .build {
+        margin-bottom: 0;
+        border: 0;
+        padding: 0;
+      }
     }
-
+    
+    .builds { }
+    
     .build {
-      margin-bottom: 0;
-      border: 0;
-      padding: 0;
-
+      
       .date {
         font-weight: lighter;
       }
@@ -94,6 +105,8 @@ body {
         background-color: black;
         color: white;
         padding: 20px;
+        
+        margin-top: 10px;
 
         .code {
           width: 1024px;
@@ -141,6 +154,7 @@ body {
 
   form {
     @include blueprint-form;
+    background-color: #fff;
 
     fieldset {
       border: 0;

@@ -1,3 +1,9 @@
+h2. Changes in this fork
+
+* destroy builds and deploys after destroying a project
+* delete project from filesystem after destroying a project
+* add index view for builds
+
 h2. INSTALLATION:
 
 0. Optionally, setup RVM: http://rvm.beginrescueend.com/rvm/install/

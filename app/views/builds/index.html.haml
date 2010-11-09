@@ -1,0 +1,11 @@
+.builds
+  .project
+    = render :layout => "shared/project", :locals => { :project => @project }
+  
+  - @project.builds.reverse.each do |build|
+    - link_to resource_path(build) do
+
+      .build{:class => build.status}
+        .author= build.author+ ':'
+        .comment= build.comment
+        .date= ago(build.created_at)
