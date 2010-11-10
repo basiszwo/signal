@@ -3,6 +3,9 @@ class Build < ActiveRecord::Base
 
   belongs_to :project
   validates_presence_of :project, :output, :commit, :author, :comment
+  
+  named_scope :reverse_and_limited, lambda {|limit| { :limit => (limit || 10), :order => 'id DESC' } }
+  
 
   protected
 

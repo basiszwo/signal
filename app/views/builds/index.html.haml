@@ -2,7 +2,7 @@
   .project
     = render :layout => "shared/project", :locals => { :project => @project }
   
-  - @project.builds.reverse.each do |build|
+  - @builds.each do |build|
     - link_to resource_path(build) do
 
       .build{:class => build.status}

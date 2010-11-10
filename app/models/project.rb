@@ -2,6 +2,7 @@ class Project < ActiveRecord::Base
   BASE_PATH = "#{RAILS_ROOT}/public/projects"
   BUILDING = "building"
 
+
   has_friendly_id :name
   before_update :rename_directory
 
@@ -13,14 +14,18 @@ class Project < ActiveRecord::Base
   def after_create
     execute "cd #{BASE_PATH} && git clone --depth 1 #{url} #{name}"
     run "git checkout -b #{branch} origin/#{branch} >" unless branch.eql? "master"
-    run "rvm gemset create #{name} >>"
-    run "rake inploy:local:setup >>"
+    # run "rvm #{ruby_version}@#{name} --create >>"
+    # run "rake inploy:local:setup >>"
   end
 
   def after_destroy
     execute "rm -rf #{path}"
   end
 
+  def ruby_version
+    "ruby-1.8.7"
+  end
+  
   def status
     building ? BUILDING : builds.last.try(:status)
   end
@@ -62,8 +67,8 @@ class Project < ActiveRecord::Base
   end
 
   def run_build_command
-    run "rvm gemset use #{name} >>"
-    result = run "unset GEM_PATH && unset RUBYOPT && unset RAILS_ENV && unset BUNDLE_GEMFILE && #{build_command} >>"
+    result = execute "unset RUBYOPT && unset RAILS_ENV && unset BUNDLE_GEMFILE && cd #{path} && ./signal_build.sh >> #{log_path} 2>&1"
+    
     return result, File.open(log_path).read
   end
 
@@ -71,22 +76,23 @@ class Project < ActiveRecord::Base
     return run("#{self.deploy_command} >"), File.open(log_path).read
   end
 
+  
   private
 
-  def path
-    "#{BASE_PATH}/#{name}"
-  end
+    def path
+      "#{BASE_PATH}/#{name}"
+    end
 
-  def log_path
-    "#{RAILS_ROOT}/tmp/#{name}"
-  end
+    def log_path
+      "#{RAILS_ROOT}/tmp/#{name}"
+    end
 
-  def run(cmd)
-    execute "cd #{path} && #{cmd} #{log_path} 2>&1"
-  end
+    def run(cmd)
+      execute "cd #{path} && #{cmd} #{log_path} 2>&1"
+    end
 
-  def execute(command)
-    Rails.logger.info "Signal => #{command}"
-    Kernel.system command
-  end
+    def execute(command)
+      Rails.logger.info "Signal => #{command}"
+      Kernel.system command
+    end
 end

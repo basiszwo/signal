@@ -130,13 +130,26 @@ body {
 
   .projects {
     @include border-radius;
-
+    
+    a {
+      margin-bottom: 10px;
+      display: block;
+      clear: both;
+      
+      &:hover {
+        text-decoration: none;
+      }
+    }
+    
     .project {
-      border-bottom: 0px;
       margin-bottom: 0px;
       padding: 10px;
       font-size: 30px;
-
+      
+      .activity {
+        float: right;
+      }
+      
       .name {
         font-weight: 900;
         float:left;
