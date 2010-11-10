@@ -13,4 +13,5 @@ class ProjectsController < InheritedResources::Base
       format.xml
     end
   end
+  
 end

@@ -1,7 +1,8 @@
 class Project < ActiveRecord::Base
   BASE_PATH = "#{RAILS_ROOT}/public/projects"
   BUILDING = "building"
-
+  
+  default_scope :order => :name
 
   has_friendly_id :name
   before_update :rename_directory
