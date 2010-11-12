@@ -1,8 +1,23 @@
-h2. Changes in this fork
+h2. Why the fork?
 
+h3. Changes
+
+* use a shell script for building which was the only possibility to make use of rvm and gemsets
+* specify a ruby version and a rvm gemset to use for building
 * destroy builds and deploys after destroying a project
 * delete project from filesystem after destroying a project
 * add index view for builds
+
+
+h3. Todos
+
+* when clicking "build" in a project don't actually perform a build but send it to delayed job (as done when pinging a project)
+* replace koujou with factory girl
+* use fixtures for cucumber steps
+* upgrade to rails 3
+* send notifications by email
+
+
 
 h2. INSTALLATION:
 
