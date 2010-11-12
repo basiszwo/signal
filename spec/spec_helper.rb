@@ -3,7 +3,7 @@
 #
 
 require 'rubygems'
-require 'sqlite3'
+# require 'sqlite3'
 
 ENV["RAILS_ENV"] ||= 'test'
 require File.expand_path(File.join(File.dirname(__FILE__),'..','config','environment'))

@@ -7,24 +7,21 @@ class Project < ActiveRecord::Base
   has_friendly_id :name
   before_update :rename_directory
 
-  validates_presence_of :name, :url, :email
+  validates_presence_of :name, :url, :email, :ruby_version, :rvm_gemset_name
+  # validates_uniqueness_of :name, :case_sensitive => false
 
   has_many :builds, :dependent => :destroy
   has_many :deploys, :dependent => :destroy
 
   def after_create
-    execute "cd #{BASE_PATH} && git clone --depth 1 #{url} #{name}"
+    execute "cd #{BASE_PATH} && git clone --depth 1 #{url} #{name_to_filesystem}"
     run "git checkout -b #{branch} origin/#{branch} >" unless branch.eql? "master"
-    # run "rvm #{ruby_version}@#{name} --create >>"
-    # run "rake inploy:local:setup >>"
+    execute "cp data/#{build_shell_script} #{path}/"
   end
 
   def after_destroy
-    execute "rm -rf #{path}"
-  end
-
-  def ruby_version
-    "ruby-1.8.7"
+    # running Kernel.system to make rspec pass
+    Kernel.system "rm -rf #{path}"
   end
   
   def status
@@ -46,46 +43,59 @@ class Project < ActiveRecord::Base
   end
 
   def has_file?(file)
-    File.exists?("#{path}/#{file}")  
+    File.exists?("#{path}/#{file}") 
   end
 
   def activity
     building? ? 'Building' : 'Sleeping'
   end
-
+  
+  
+  def name_to_filesystem
+    name.downcase.gsub(/\s/, '_')
+  end
+  
+  def name_was_to_filesystem
+    name_was.downcase.gsub(/\s/, '_')
+  end
+  
   protected
+  
+    def build_shell_script
+      "signal_build.sh"
+    end
 
-  def rename_directory
-    execute "cd #{BASE_PATH} && mv #{name_was} #{name}" if self.name_changed?
-  end
+    def rename_directory
+      execute "cd #{BASE_PATH} && mv #{name_was_to_filesystem} #{name_to_filesystem}" if self.name_changed?
+    end
 
-  def update_code
-    run "git pull #{url} #{branch} >"
-  end
+    def update_code
+      run "git pull #{url} #{branch} >"
+    end
 
-  def last_commit
-    Git.open(path).log.first
-  end
+    def last_commit
+      Git.open(path).log.first
+    end
 
-  def run_build_command
-    result = execute "unset RUBYOPT && unset RAILS_ENV && unset BUNDLE_GEMFILE && cd #{path} && ./signal_build.sh >> #{log_path} 2>&1"
+    def run_build_command
+      result = execute "unset RUBYOPT && unset RAILS_ENV && unset BUNDLE_GEMFILE && cd #{path} && ./signal_build.sh #{ruby_version} #{rvm_gemset_name} >> #{log_path} 2>&1"
     
-    return result, File.open(log_path).read
-  end
+      return result, File.open(log_path).read
+    end
 
-  def run_deploy
-    return run("#{self.deploy_command} >"), File.open(log_path).read
-  end
+    def run_deploy
+      return run("#{self.deploy_command} >"), File.open(log_path).read
+    end
 
   
   private
 
     def path
-      "#{BASE_PATH}/#{name}"
+      "#{BASE_PATH}/#{name_to_filesystem}"
     end
 
     def log_path
-      "#{RAILS_ROOT}/tmp/#{name}"
+      "#{RAILS_ROOT}/tmp/#{name_to_filesystem}"
     end
 
     def run(cmd)

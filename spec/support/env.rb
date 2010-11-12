@@ -56,7 +56,7 @@ def file_doesnt_exists(file)
 end
 
 def create_project
-  returning Project.new :name => "signal", :url => "git@signal", :email => "signal@signal.com" do |project|
+  returning Project.new :name => "signal", :url => "git@signal", :email => "signal@signal.com", :ruby_version => 'ruby-1.8.7', :rvm_gemset_name => 'signal_app' do |project|
     project.stub!(:execute)
     project.save!
   end

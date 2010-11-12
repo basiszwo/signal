@@ -9,30 +9,33 @@ class Build < ActiveRecord::Base
 
   protected
 
-  def before_validation_on_create
-    return nil if project.nil?
-    project.update_code
-    self.success, self.output = project.run_build_command
-    take_data_from project.last_commit
-  end
+    # TODO: refactor with move method
+    def before_validation_on_create
+      return nil if project.nil?
+      project.update_code
+      self.success, self.output = project.run_build_command
+      take_data_from project.last_commit
+    end
 
-  def after_validation_on_create
-    Notifier.deliver_fix_notification self if fix?
-  end
+    def after_validation_on_create
+      Notifier.deliver_fix_notification self if fix?
+    end
 
-  def after_create
-    Notifier.deliver_fail_notification self unless success
-  end
+    def after_create
+      Notifier.deliver_fail_notification self unless success
+    end
+
 
   private
 
-  def take_data_from(commit)
-    self.commit = commit.sha
-    self.author = commit.author.name
-    self.comment = commit.message
-  end
+    def take_data_from(commit)
+      self.commit = commit.sha
+      self.author = commit.author.name
+      self.comment = commit.message
+    end
 
-  def fix?
-    success and Build.last.try(:success) == false
-  end
+    def fix?
+      success and Build.last.try(:success) == false
+    end
+
 end

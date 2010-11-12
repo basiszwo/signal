@@ -1,26 +1,30 @@
 require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Project do
-  should_validate_presence_of :name, :url, :email
+  
+  should_validate_presence_of :name, :url, :email, :ruby_version, :rvm_gemset_name
+  # should_validate_uniqueness_of :name
+  
   should_have_many :builds
   should_have_many :deploys
 
   it "should have public/projects as the projects base path" do
     Project::BASE_PATH.should eql("#{RAILS_ROOT}/public/projects")
   end
-
-  it "should have default build_command as 'rake build'" do
-    subject.build_command.should eql("rake build")
-  end
-
+  
+  
   context "on creation" do
     before :each do
       success_on_command
-      @project = Project.new :name => "social", :url => "git://social", :email => "fake@mouseoverstudio.com"
+      @project = Project.new :name => "Social App", :url => "git://social", :email => "fake@mouseoverstudio.com", :ruby_version => 'ruby-1.8.7', :rvm_gemset_name => 'social_app'
+    end
+
+    it "should create the correct project name for the filesystem" do
+      @project.name_to_filesystem.should eql("social_app")
     end
 
     it "should clone a repository without the history" do
-      expect_for "cd #{Project::BASE_PATH} && git clone --depth 1 #{@project.url} #{@project.name}"
+      expect_for "cd #{Project::BASE_PATH} && git clone --depth 1 #{@project.url} #{@project.name_to_filesystem}"
       @project.save
     end
 
@@ -36,13 +40,8 @@ describe Project do
       @project.save
     end
     
-    it "should create a gemset with the project name" do
-      expect_for "cd #{@project.send :path} && rvm gemset create #{@project.name} >> #{@project.send :log_path} 2>&1"
-      @project.save
-    end
-
-    it "should run inploy:local:setup" do
-      expect_for "cd #{@project.send :path} && rake inploy:local:setup >> #{@project.send :log_path} 2>&1"
+    it "should copy the signal build shell script" do
+      expect_for "cp data/#{@project.send :build_shell_script} #{@project.send :path}/"
       @project.save
     end
   end
@@ -67,6 +66,7 @@ describe Project do
       project.build
       project.should_not be_building
     end
+        
   end
 
   context "on #activity" do
@@ -76,6 +76,17 @@ describe Project do
 
     it "should return Building when being build" do
       Project.new(:building => true).activity.should eql('Building')
+    end
+  end
+  
+  context "on #destroy" do
+    let(:project) { create_project }
+    
+    it "should delete the project from the filesystem" do
+      path = project.send :path
+      
+      expect_for "rm -rf #{path}"
+      project.destroy
     end
   end
 
@@ -113,12 +124,12 @@ describe Project do
   context "on update" do
     before :each do
       success_on_command
-      @project = Project.create! :name => "project1",:url => "git://social", :email => "fake@mouseoverstudio.com"
+      @project = Project.create! :name => "Project 1",:url => "git://social", :email => "fake@mouseoverstudio.com", :ruby_version => 'ruby-1.8.7', :rvm_gemset_name => 'project_1'
     end
 
     it "should rename the directory when the name changes" do
-      expect_for "cd #{Project::BASE_PATH} && mv project1 project2"
-      @project.update_attributes :name => "project2"
+      expect_for "cd #{Project::BASE_PATH} && mv project_1 project_2"
+      @project.update_attributes :name => "Project 2"
     end
 
     it "should not rename the directory when the name doesn't change" do
@@ -148,11 +159,15 @@ describe Project do
 
   context "on has_file?" do
     it "should return true if the project has the file path" do
+      subject.name = "Signal One"
+      
       file_exists(subject.send(:path) + '/doc/specs.html')
       subject.has_file?("doc/specs.html").should be_true
     end
 
     it "should return false if the project doesnt has the file path" do
+      subject.name = "Signal One"
+      
       file_doesnt_exists(subject.send(:path) + '/doc/specs.html')
       subject.has_file?("doc/specs.html").should be_false
     end
