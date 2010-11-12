@@ -3,10 +3,11 @@ Feature: Manage projects
   Scenario: Register new project
     Given I am on the new projects page
     Then I should not see /Building/
-
     When I fill in "project_name" with "Geni"
     And I fill in "project_url" with "git://fake"
     And I fill in "project_email" with "fake@too.com"
+    And I fill in "project_ruby_version" with "ruby-1.8.7"
+    And I fill in "project_rvm_gemset_name" with "geni"
     And I press "Create Project"
     Then a new project should be created
     And I should see /Geni/
@@ -15,7 +16,6 @@ Feature: Manage projects
     Given I have a project
     And I am on the edit project page
     Then I should not see /Building/
-
     When I fill in "project_name" with "Bluepump"
     When I fill in "project_url" with "gitFake"
     And I press "Save Project"
@@ -50,11 +50,11 @@ Feature: Manage projects
     Then I should get a XML document
 
   Scenario: RSS
-    Given I have a project
+    Given I have a project with name "Test"
     When I request '/'
     Then I should receive a link for the feed of all projects
     And I should receive a link for the feed of the project
     When I request '/projects.rss' 
     Then I should see the name of the project
-    When I request '/projects/1.rss'
+    When I request '/projects/test.rss'
     Then I should see the name of the project

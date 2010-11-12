@@ -1,9 +1,9 @@
 Given /^I have a project$/ do
-  @project = Project.create! :name => "whatever", :url => "fake", :email => "fake2"
+  @project = Project.create! :name => "whatever", :url => "fake", :email => "fake2", :ruby_version => 'ruby-1.8.7', :rvm_gemset_name => 'fake'
 end
 
-Given /^I have a project with name "([^"]*)"$/ do |arg1|
-  @project = Project.create! :name => name, :url => "fake", :email => "fake2"
+Given /^I have a project with name "([^"]*)"$/ do |name|
+  @project = Project.create! :name => name, :url => "fake", :email => "fake2", :ruby_version => 'ruby-1.8.7', :rvm_gemset_name => 'fake'
 end
 
 When /^I request '(.*)'$/ do |path|
