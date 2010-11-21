@@ -1,5 +1,5 @@
 Feature: Manage projects
-
+  
   Scenario: Register new project
     Given I am on the new projects page
     Then I should not see /Building/
@@ -18,7 +18,7 @@ Feature: Manage projects
     Then I should not see /Building/
     When I fill in "project_name" with "Bluepump"
     When I fill in "project_url" with "gitFake"
-    And I press "Save Project"
+    And I press "Update Project"
     Then I should see /Bluepump/
     And I should see /gitFake/
 
