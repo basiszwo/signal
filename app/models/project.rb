@@ -1,10 +1,10 @@
 class Project < ActiveRecord::Base
-  BASE_PATH = "#{RAILS_ROOT}/public/projects"
+  BASE_PATH = "#{Rails.root}/public/projects"
   BUILDING = "building"
   
   default_scope :order => :name
 
-  has_friendly_id :name
+  has_friendly_id :name, :use_slug => true, :approximate_ascii => true
   before_update :rename_directory
 
   validates_presence_of :name, :url, :email, :ruby_version, :rvm_gemset_name
@@ -13,13 +13,16 @@ class Project < ActiveRecord::Base
   has_many :builds, :dependent => :destroy
   has_many :deploys, :dependent => :destroy
 
-  def after_create
+  after_create :initialize_project
+  after_destroy :remove_project_from_filesystem
+
+  def initialize_project
     execute "cd #{BASE_PATH} && git clone --depth 1 #{url} #{name_to_filesystem}"
     run "git checkout -b #{branch} origin/#{branch} >" unless branch.eql? "master"
     execute "cp data/#{build_shell_script} #{path}/"
   end
 
-  def after_destroy
+  def remove_project_from_filesystem
     # running Kernel.system to make rspec pass
     Kernel.system "rm -rf #{path}"
   end
@@ -95,7 +98,7 @@ class Project < ActiveRecord::Base
     end
 
     def log_path
-      "#{RAILS_ROOT}/tmp/#{name_to_filesystem}"
+      "#{Rails.root}/tmp/#{name_to_filesystem}"
     end
 
     def run(cmd)

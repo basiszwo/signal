@@ -50,7 +50,7 @@ Feature: Manage projects
     Then I should get a XML document
 
   Scenario: RSS
-    Given I have a project with name "Test"
+    Given I have a project with name "test"
     When I request '/'
     Then I should receive a link for the feed of all projects
     And I should receive a link for the feed of the project
@@ -58,3 +58,15 @@ Feature: Manage projects
     Then I should see the name of the project
     When I request '/projects/test.rss'
     Then I should see the name of the project
+
+  Scenario Outline: find project by id
+    Given I have a project with name "<name>"
+    When I request '/projects/<slug>'
+    Then I should be on "/projects/<slug>"
+    
+    Examples:
+      | name       | slug       |
+      | Test       | test       |
+      | My Project | my-project |
+
+

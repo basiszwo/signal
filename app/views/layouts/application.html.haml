@@ -3,13 +3,13 @@
 %html
   %head
     %title signal~
-    = javascript_include_merged :base
-    = stylesheet_link_merged 'screen', :media => 'screen, projection'
-    = stylesheet_link_merged 'print', :media => 'print'
+    != javascript_include_merged :base
+    != stylesheet_link_merged 'screen', :media => 'screen, projection'
+    != stylesheet_link_merged 'print', :media => 'print'
     /[if lt IE 8]
-      = stylesheet_link_merged 'ie', :media => 'screen, projection'
+      != stylesheet_link_merged 'ie', :media => 'screen, projection'
     
-    = auto_discovery_link_tag :rss, root_path(:format => :rss), :title => "Signal"
+    != auto_discovery_link_tag :rss, root_path(:format => :rss), :title => "Signal"
   %body
     #container
       #header

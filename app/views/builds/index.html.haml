@@ -1,10 +1,9 @@
 .builds
   .project
-    = render :layout => "shared/project", :locals => { :project => @project }
+    = render :partial => "shared/project", :locals => { :project => @project }
   
   - @builds.each do |build|
-    - link_to resource_path(build) do
-
+    = link_to resource_path(build) do
       .build{:class => build.status}
         .author= build.author+ ':'
         .comment= build.comment

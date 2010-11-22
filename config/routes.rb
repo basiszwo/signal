@@ -1,13 +1,26 @@
-ActionController::Routing::Routes.draw do |map|
-  map.projects_status "/projects/status.:format", :controller => :projects, :action => :status
-  map.resources :projects do |project|
-    project.resources :builds
-    project.resources :deploys
-    project.connect 'build', :controller => 'projects', :action => 'build'
+Signal::Application.routes.draw do
+  
+  match '/projects/status.:format' => 'projects#status', :as => :projects_status
+  resources :projects do
+    resources :builds
+    resources :deploys
+
+    match 'build' => 'projects#build'
   end
-  map.root     :controller => "projects"
-  map.metrics  "/projects/:name/tmp/metric_fu/output/index.html", :controller => nil
-  map.specs    "/projects/:name/doc/specs.html",                  :controller => nil
-  map.features "/projects/:name/doc/features.html",               :controller => nil
-  map.war      "/projects/:name/target/:name.war",                :controller => nil
+  
+  
+  # match '/projects/:name/tmp/metric_fu/output/index.html' => '#index', :as => :metrics
+  # match '/projects/:name/doc/specs.html' => '#index', :as => :specs
+  # match '/projects/:name/doc/features.html' => '#index', :as => :features
+  # match '/projects/:name/target/:name.war' => '#index', :as => :war
+
+  ## old style routes
+  # map.metrics  "/projects/:name/tmp/metric_fu/output/index.html", :controller => nil
+  # map.specs    "/projects/:name/doc/specs.html",                  :controller => nil
+  # map.features "/projects/:name/doc/features.html",               :controller => nil
+  # map.war      "/projects/:name/target/:name.war",                :controller => nil
+  ###
+  
+  root :to => 'projects#index'
+  
 end

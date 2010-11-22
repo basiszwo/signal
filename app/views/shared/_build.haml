@@ -3,4 +3,5 @@
   .comment= build.comment
   .date= ago(build.created_at)
   .output
-    .code= format_output(build.output)
+    .code
+      != format_output(build.output)

@@ -1,5 +1,5 @@
 .actions
-  = link_to '&laquo; show all builds', project_builds_path(@project) unless @project.builds.empty?
+  = link_to '&laquo; show all builds'.html_safe, project_builds_path(@project) unless @project.builds.empty?
 
-- render :layout => "shared/project", :locals => { :project => @project } do
+= render :layout => "shared/project", :locals => { :project => @project } do
   = render :partial => "shared/build", :locals => { :build => @project.builds.last } unless @project.builds.empty?

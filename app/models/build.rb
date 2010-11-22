@@ -4,24 +4,27 @@ class Build < ActiveRecord::Base
   belongs_to :project
   validates_presence_of :project, :output, :commit, :author, :comment
   
-  named_scope :reverse_and_limited, lambda {|limit| { :limit => (limit || 10), :order => 'id DESC' } }
+  scope :reverse_and_limited, lambda {|limit| { :limit => (limit || 10), :order => 'id DESC' } }
   
+  before_validation :update_project_code, :on => :create
+  after_validation :deliver_fix_notification, :on => :create
+  after_create :deliver_fail_notification
 
   protected
 
     # TODO: refactor with move method
-    def before_validation_on_create
+    def update_project_code
       return nil if project.nil?
       project.update_code
       self.success, self.output = project.run_build_command
       take_data_from project.last_commit
     end
 
-    def after_validation_on_create
+    def deliver_fix_notification
       Notifier.deliver_fix_notification self if fix?
     end
-
-    def after_create
+    
+    def deliver_fail_notification
       Notifier.deliver_fail_notification self unless success
     end
 
