@@ -25,22 +25,45 @@ gem 'delayed_job', '1.8.1'
 gem "compass", ">= 0.10.2"
 gem "daemons"
 
-gem 'metric_fu'
+gem 'jquery-rails'
 
 group :test do
-  gem 'rspec', '1.3.0'
-  gem 'rspec-rails', '1.3.2'
-  gem 'remarkable'
-  gem 'remarkable_rails'
-  gem 'koujou'
+
+  gem 'capybara'
+  gem 'database_cleaner'
+  gem 'cucumber-rails'
+  gem 'cucumber'
+  gem 'rspec-rails'
+  gem 'rspec'
+  gem 'rspec-core'
+  gem 'rspec-expectations'
+  gem 'rspec-mocks'
+  gem 'spork'
+  gem 'launchy'    # So you can do Then show me the page
+
+  gem 'email_spec'
+  
+  gem 'pickle'
+  gem 'factory_girl'
+  gem 'factory_girl_rails'
+  
+  # gem 'rspec', '1.3.1'
+  # gem 'rspec-rails', '1.3.3'
+  # gem 'remarkable'
+  # gem 'remarkable_rails'
+  
+  # gem 'email_spec', '0.3.5'
+  
+  # gem 'cucumber'
+  # gem 'cucumber-rails'
+  # gem 'database_cleaner'
+  # gem 'capybara', '0.3.9'
+
+  gem 'metric_fu'
+
   gem 'faker'
   gem 'fakefs', :require => 'fakefs/safe'
-  gem 'email_spec', '0.3.5'
-end
+    
+  # gem 'koujou'
 
-group :cucumber do
-  gem 'cucumber'
-  gem 'cucumber-rails'
-  gem 'database_cleaner'
-  gem 'capybara', '0.3.9'
 end

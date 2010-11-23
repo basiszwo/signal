@@ -6,7 +6,6 @@ require 'rails/all'
 # you've limited to :test, :development, or :production.
 Bundler.require(:default, Rails.env) if defined?(Bundler)
 
-# MAILER = YAML.load_file( Rails.root + 'config/mailer.yml')
 
 module Signal
   class Application < Rails::Application

@@ -8,8 +8,9 @@
     != stylesheet_link_merged 'print', :media => 'print'
     /[if lt IE 8]
       != stylesheet_link_merged 'ie', :media => 'screen, projection'
+    = csrf_meta_tag
     
-    != auto_discovery_link_tag :rss, root_path(:format => :rss), :title => "Signal"
+    != auto_discovery_link_tag :rss, projects_path(:format => :rss), :title => "Signal"
   %body
     #container
       #header

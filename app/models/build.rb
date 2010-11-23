@@ -4,7 +4,7 @@ class Build < ActiveRecord::Base
   belongs_to :project
   validates_presence_of :project, :output, :commit, :author, :comment
   
-  scope :reverse_and_limited, lambda {|limit| { :limit => (limit || 10), :order => 'id DESC' } }
+  scope :reverse_and_limited, lambda { |limit_count| limit(limit_count || 10).order('id DESC') }
   
   before_validation :update_project_code, :on => :create
   after_validation :deliver_fix_notification, :on => :create
@@ -21,11 +21,11 @@ class Build < ActiveRecord::Base
     end
 
     def deliver_fix_notification
-      Notifier.deliver_fix_notification self if fix?
+      Notifier.fix_notification.deliver self if fix?
     end
     
     def deliver_fail_notification
-      Notifier.deliver_fail_notification self unless success
+      Notifier.fail_notification.deliver self unless success
     end
 
 

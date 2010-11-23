@@ -2,8 +2,8 @@
 javascripts:
 - base:
   - jquery
-  - jquery-ui
-  - jrails
+  # - jquery-ui
+  - rails
 stylesheets:
 - ie:
   - ie

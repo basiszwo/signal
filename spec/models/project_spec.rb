@@ -2,14 +2,14 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Project do
   
-  should_validate_presence_of :name, :url, :email, :ruby_version, :rvm_gemset_name
-  # should_validate_uniqueness_of :name
-  
-  should_have_many :builds
-  should_have_many :deploys
+  # should_validate_presence_of :name, :url, :email, :ruby_version, :rvm_gemset_name
+  # # should_validate_uniqueness_of :name
+  # 
+  # should_have_many :builds
+  # should_have_many :deploys
 
   it "should have public/projects as the projects base path" do
-    Project::BASE_PATH.should eql("#{RAILS_ROOT}/public/projects")
+    Project::BASE_PATH.should eql("#{Rails.root}/public/projects")
   end
   
   

@@ -1,0 +1,1 @@
+MAILER = YAML.load_file( Rails.root + 'config/mailer.yml')

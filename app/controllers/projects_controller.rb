@@ -8,10 +8,18 @@ class ProjectsController < InheritedResources::Base
 
   def status
     @projects = Project.all
-    respond_to do |format|
-      format.html { render :partial => "shared/projects" }
-      format.xml
-    end
+    
+    # respond_to do |format|
+    #   format.html #{ render :layout => false, :partial => "shared/projects" }
+    #   format.xml
+    # end
+    
   end
+  
+  
+  protected
+    def collection
+      @projects ||= end_of_association_chain.ordered_by_name
+    end
   
 end

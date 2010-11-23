@@ -2,7 +2,7 @@ class Project < ActiveRecord::Base
   BASE_PATH = "#{Rails.root}/public/projects"
   BUILDING = "building"
   
-  default_scope :order => :name
+  scope :ordered_by_name, order('name')
 
   has_friendly_id :name, :use_slug => true, :approximate_ascii => true
   before_update :rename_directory
@@ -83,7 +83,7 @@ class Project < ActiveRecord::Base
     def run_build_command
       result = execute "unset RUBYOPT && unset RAILS_ENV && unset BUNDLE_GEMFILE && cd #{path} && ./signal_build.sh #{ruby_version} #{rvm_gemset_name} >> #{log_path} 2>&1"
     
-      return result, File.open(log_path).read
+      return result, (File.open(log_path).read rescue '')
     end
 
     def run_deploy
