@@ -42,22 +42,11 @@ group :test do
   gem 'launchy'    # So you can do Then show me the page
 
   gem 'email_spec'
+  gem 'autotest'
   
   gem 'pickle'
   gem 'factory_girl'
   gem 'factory_girl_rails'
-  
-  # gem 'rspec', '1.3.1'
-  # gem 'rspec-rails', '1.3.3'
-  # gem 'remarkable'
-  # gem 'remarkable_rails'
-  
-  # gem 'email_spec', '0.3.5'
-  
-  # gem 'cucumber'
-  # gem 'cucumber-rails'
-  # gem 'database_cleaner'
-  # gem 'capybara', '0.3.9'
 
   gem 'metric_fu'
 

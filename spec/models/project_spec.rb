@@ -13,10 +13,11 @@ describe Project do
   end
   
   
-  context "on creation" do
+  describe "on creation" do
     before :each do
       success_on_command
-      @project = Project.new :name => "Social App", :url => "git://social", :email => "fake@mouseoverstudio.com", :ruby_version => 'ruby-1.8.7', :rvm_gemset_name => 'social_app'
+      @project = Factory.build(:project, :name => "Social App", :url => "git://social", :email => "fake@mouseoverstudio.com", :ruby_version => 'ruby-1.8.7', :rvm_gemset_name => 'social_app')
+      # @project = Project.new :name => "Social App", :url => "git://social", :email => "fake@mouseoverstudio.com", :ruby_version => 'ruby-1.8.7', :rvm_gemset_name => 'social_app'
     end
 
     it "should create the correct project name for the filesystem" do
@@ -46,7 +47,7 @@ describe Project do
     end
   end
 
-  context "on #build" do
+  describe "on #build" do
     let(:project) { create_project }
 
     it "should create a new build" do
@@ -69,7 +70,7 @@ describe Project do
         
   end
 
-  context "on #activity" do
+  describe "on #activity" do
     it "should return Sleeping when not being build" do
       Project.new(:building => false).activity.should eql('Sleeping')
     end
@@ -79,7 +80,7 @@ describe Project do
     end
   end
   
-  context "on #destroy" do
+  describe "on #destroy" do
     let(:project) { create_project }
     
     it "should delete the project from the filesystem" do
@@ -90,7 +91,7 @@ describe Project do
     end
   end
 
-  context "when returing the status" do
+  describe "when returing the status" do
     before :each do
       @project = Project.new :builds => [@build = Build.new]
     end
@@ -121,7 +122,7 @@ describe Project do
     Project.new(:builds => [Build.new :created_at => date]).last_builded_at.should eql(date)
   end
 
-  context "on update" do
+  describe "on update" do
     before :each do
       success_on_command
       @project = Project.create! :name => "Project 1",:url => "git://social", :email => "fake@mouseoverstudio.com", :ruby_version => 'ruby-1.8.7', :rvm_gemset_name => 'project_1'
@@ -157,7 +158,7 @@ describe Project do
     subject.branch.should eql("master")
   end
 
-  context "on has_file?" do
+  describe "on has_file?" do
     it "should return true if the project has the file path" do
       subject.name = "Signal One"
       

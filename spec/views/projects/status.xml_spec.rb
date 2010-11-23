@@ -1,10 +1,11 @@
 require File.expand_path(File.dirname(__FILE__) + '/../../spec_helper')
 
 describe "/projects/status.xml.haml" do
-  context "rendering a xml document respecting CCMMenu specifications" do
+  describe "rendering a xml document respecting CCMMenu specifications" do
     before :each do
       @build = Build.new :success => rand(1)
-      @project = Project.koujou_build :builds => [@build]
+      # @project = Project.koujou_build :builds => [@build]
+      @project = Factory.create(:project, :builds => [@build])
       assigns[:projects] = @projects = [Project.koujou_build, @project]
     end
     

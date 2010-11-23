@@ -31,6 +31,7 @@ GEM
     activesupport (3.0.3)
     arel (2.0.4)
     arrayfields (4.7.4)
+    autotest (4.4.5)
     babosa (0.2.0)
     builder (2.1.2)
     capybara (0.3.9)
@@ -221,6 +222,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  autotest
   capybara
   compass (>= 0.10.2)
   cucumber

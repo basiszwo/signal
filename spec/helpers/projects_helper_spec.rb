@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe ProjectsHelper do
   include ProjectsHelper
 
-  context "returning the build date for a project" do
+  describe "returning the build date for a project" do
     it "should return an empty string when the project doesn't have builds" do
       build_date_for(Project.new).should be_empty
     end

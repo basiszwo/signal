@@ -8,12 +8,13 @@ describe Notifier do
   before :all do
     @address = "all@mouseoverstudio.com"
     @name = "rails"
-    @build = Build.new(:project => Project.new(:email => @address, :name => @name), :output => '')
+    @project = Factory.build(:project, :email => @address, :name => @name)
+    @build = Build.new(:project => @project, :output => '')
   end
 
-  context "delivering fail notification" do
+  describe "delivering fail notification" do
     before :all do
-      @email = Notifier.deliver_fail_notification @build 
+      @email = Notifier.fail_notification(@build).deliver
     end
 
     it "should deliver to project email" do
@@ -33,9 +34,9 @@ describe Notifier do
     end
   end
 
-  context "delivering fix notification" do
+  describe "delivering fix notification" do
     before :all do
-      @email = Notifier.deliver_fix_notification @build 
+      @email = Notifier.fix_notification(@build).deliver
     end
 
     it "should deliver to project email" do

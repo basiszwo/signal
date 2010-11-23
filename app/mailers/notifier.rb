@@ -18,7 +18,7 @@ class Notifier < ActionMailer::Base
       @build = build
       @project = build.project
       
-      mail(:to => project.email,
-           :subject => "[Signal] #{project.name} #{status}" )
+      mail(:to => @project.email,
+           :subject => "[Signal] #{@project.name} #{status}" )
     end
 end

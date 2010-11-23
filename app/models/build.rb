@@ -21,11 +21,11 @@ class Build < ActiveRecord::Base
     end
 
     def deliver_fix_notification
-      Notifier.fix_notification.deliver self if fix?
+      Notifier.fix_notification(self).deliver if fix?
     end
     
     def deliver_fail_notification
-      Notifier.fail_notification.deliver self unless success
+      Notifier.fail_notification(self).deliver unless success
     end
 
 

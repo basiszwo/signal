@@ -13,7 +13,7 @@ class Project < ActiveRecord::Base
   has_many :builds, :dependent => :destroy
   has_many :deploys, :dependent => :destroy
 
-  after_create :initialize_project
+  # after_create :initialize_project
   after_destroy :remove_project_from_filesystem
 
   def initialize_project

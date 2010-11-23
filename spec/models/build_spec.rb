@@ -6,11 +6,13 @@ describe Build do
   # should_validate_presence_of :project, :output, :commit, :author, :comment
   # it_should_behave_like 'statusable'
 
-  context "on creation" do
+  describe "on creation" do
     before :each do
       fail_on_command
       File.stub!(:open).and_return(mock(Object, :read => "lorem ipsum"))
-      @project = Project.koujou_build :branch => "staging"
+      # @project = Project.koujou_build :branch => "staging"
+      @project = Factory.create(:project, :branch => "staging")
+      puts "Project:" + @project.inspect
       build_repo_for @project
     end
 
