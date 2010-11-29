@@ -4,7 +4,7 @@ class Project < ActiveRecord::Base
   
   scope :ordered_by_name, order('name')
 
-  has_friendly_id :name, :use_slug => true, :approximate_ascii => true
+  # has_friendly_id :name, :use_slug => true, :approximate_ascii => true
   before_update :rename_directory
 
   validates_presence_of :name, :url, :email, :ruby_version, :rvm_gemset_name
@@ -13,7 +13,7 @@ class Project < ActiveRecord::Base
   has_many :builds, :dependent => :destroy
   has_many :deploys, :dependent => :destroy
 
-  # after_create :initialize_project
+  after_create :initialize_project
   after_destroy :remove_project_from_filesystem
 
   def initialize_project

@@ -1,10 +1,11 @@
 Signal::Application.routes.draw do
   
-  match '/projects/status.:format' => 'projects#status', :as => :projects_status
+  match '/projects/status(.:format)' => 'projects#status', :as => :status_projects  
+  
   resources :projects do
     resources :builds
     resources :deploys
-
+    
     match 'build' => 'projects#build'
   end
   

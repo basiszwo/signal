@@ -9,7 +9,7 @@ describe Notifier do
     @address = "all@mouseoverstudio.com"
     @name = "rails"
     @project = Factory.build(:project, :email => @address, :name => @name)
-    @build = Build.new(:project => @project, :output => '')
+    @build = Factory.build(:build, :project => @project)
   end
 
   describe "delivering fail notification" do
@@ -29,8 +29,8 @@ describe Notifier do
       @email.should deliver_from("signal@#{MAILER['domain']}")
     end
 
-    it "should deliver as HTML with chartset UTF-8" do
-      @email.header['content-type'].to_s.should eql("text/html; charset=utf-8")
+    it "should deliver with charset UTF-8" do
+      @email.header['content-type'].to_s.should =~ /charset=utf-8/i
     end
   end
 
